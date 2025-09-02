@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import FastAPI
 # Schemas
 from pydantic import BaseModel
@@ -49,3 +51,37 @@ class Todo(Base):
     owner_id = Column(Integer, index=True)
 
 Base.metadata.create_all(bind=engine)
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+class UserCreate(BaseModel):
+    username: str
+    password: str
+
+class UserInDB(UserCreate):
+    hashed_password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
+
+class TodoCreate(BaseModel):
+    title: str
+    description: str
+
+class TodoInDB(TodoCreate):
+    owner_id: int
+
+class TodoGet(BaseModel):
+    id: int
+    title: str
+    description: str
+
