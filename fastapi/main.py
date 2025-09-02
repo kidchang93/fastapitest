@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 # Schemas
 from pydantic import BaseModel
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, Column, Integer, String, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 from starlette.middleware.cors import CORSMiddleware
 
@@ -33,3 +33,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Models
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    is_active = Column(Boolean, default=True)
+
+class Todo(Base):
+    __tablename__ = "todos"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, index=True)
+    description = Column(String, index=True)
+    owner_id = Column(Integer, index=True)
+
+Base.metadata.create_all(bind=engine)
