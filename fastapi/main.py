@@ -1,10 +1,12 @@
-from typing import Optional
+from typing import Optional, Annotated
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from fastapi.security import OAuth2PasswordBearer
+from passlib.context import CryptContext
 # Schemas
 from pydantic import BaseModel
 from sqlalchemy import create_engine, text, Column, Integer, String, Boolean
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from starlette.middleware.cors import CORSMiddleware
 
 SECRET_KEY = "your_secret_key"
@@ -85,3 +87,7 @@ class TodoGet(BaseModel):
     title: str
     description: str
 
+# Authentication setup
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+db_dependency = Annotated[Session, Depends(get_db)]
