@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/fastapi-vue/fastapi-vue.iml" filepath="$PROJECT_DIR$/fastapi-vue/fastapi-vue.iml" />
       <module fileurl="file://$PROJECT_DIR$/fastapitest.iml" filepath="$PROJECT_DIR$/fastapitest.iml" />
     </modules>
   </component>
