@@ -1,8 +1,9 @@
-
+from fastapi import FastAPI
 # Schemas
 from pydantic import BaseModel
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import declarative_base, sessionmaker
+from starlette.middleware.cors import CORSMiddleware
 
 SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
@@ -20,3 +21,15 @@ try:
     print("Session 연결 성공:",result.fetchone())
 finally:
     db.close()
+
+app = FastAPI()
+
+# Setting up CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins= ["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
